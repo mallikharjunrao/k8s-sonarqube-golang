@@ -57,7 +57,9 @@ RUN wget https://dl.google.com/go/go1.10.linux-amd64.tar.gz && \
 # Install GoMetaLinter
 RUN go get -u gopkg.in/alecthomas/gometalinter.v2 && \
     mv $HOME/go/bin/gometalinter.v2 $HOME/go/bin/gometalinter
-    gometalinger --install
+
+# GoMetaLinter installation (install linters)
+RUN gometalinger --install
 
 # Install Sonar-Scanner
 RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778-linux.zip
