@@ -1,0 +1,33 @@
+Building in Docker Cloud's infrastructure...
+Cloning into '.'...
+
+KernelVersion: 4.4.0-93-generic
+Arch: amd64
+BuildTime: 2017-08-17T22:50:04.828747906+00:00
+ApiVersion: 1.30
+Version: 17.06.1-ce
+MinAPIVersion: 1.12
+GitCommit: 874a737
+Os: linux
+GoVersion: go1.8.3
+Starting build of index.docker.io/talderon/k8s-sonarqube:latest...
+Unexpected error
+Encountered error: 500 Server Error: Internal Server Error ("Dockerfile parse error line 60: unknown instruction: GOMETALINGER")
+Traceback (most recent call last):
+  File "/stage/builder/runner.py", line 288, in _run
+    self.build()
+  File "/stage/builder/runner.py", line 212, in build
+    self._build()
+  File "/stage/builder/runner.py", line 200, in _build
+    cache_repo)
+  File "/stage/builder/build.py", line 43, in build_image
+    for line in stream:
+  File "/usr/local/lib/python2.7/dist-packages/docker/api/client.py", line 305, in _stream_helper
+    yield self._result(response, json=decode)
+  File "/usr/local/lib/python2.7/dist-packages/docker/api/client.py", line 220, in _result
+    self._raise_for_status(response)
+  File "/usr/local/lib/python2.7/dist-packages/docker/api/client.py", line 216, in _raise_for_status
+    raise create_api_error_from_http_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/docker/errors.py", line 30, in create_api_error_from_http_exception
+    raise cls(e, response=response, explanation=explanation)
+APIError: 500 Server Error: Internal Server Error ("Dockerfile parse error line 60: unknown instruction: GOMETALINGER")
