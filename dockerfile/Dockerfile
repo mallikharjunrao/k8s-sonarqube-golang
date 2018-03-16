@@ -9,7 +9,7 @@ MAINTAINER Dennis Christilaw (https://github.com/Talderon)
 LABEL version="0.5.2"
 LABEL description="Beta build of SonarQube Scanner for GoLang."
 
-FROM ubuntu:16.04:lts
+FROM ubuntu:16.04
 
 ENV HOME /root
 
