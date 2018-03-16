@@ -8,6 +8,8 @@ This document series is meant to help anyone that wants to perform code quality 
 
 The reason for this documentation series is that there are no complete set of docs on how to get SonarQube to work with GoLang. GoLang is not officially supported by SonarQube, so the process to get this working can be difficult as there are many moving parts to try and hit this moving target.  Since I was unable to find a complete set of documents that start from the beginning and go to the end in one place, I decided to get this together to help those that are wanting to do this, but find the lack of information daunting.
 
+The Code Blocks included here are samples that should work without edit if you are setting this up as a brand new instance. Be sure to check these and verify they will not make changes that would break other apps/tool.
+
 You will also install the correct plugins for the following functions:
 
 Build Break when scan produced results that do not pass the quality gates (recommended)
@@ -52,10 +54,18 @@ mkdir -p ~/go_projects/{bin,src,pkg}
 
 Add the following lines to your profile (varied depending on OS) - you can put them at the end of the file
 
-> For MAC/Ubuntu, edit/create .bash_profile
+> For Ubuntu, re-creating the /etc/environment file with all of the path variables needed for this project.
 
 ```
-export PATH=$PATH:/usr/local/go/bin
+rm -f /etc/environment && \
+printf '%s\n' 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/go/bin:/root/go_projects/bin:/usr/local:/usr/local/sonar-scanner/bin"' ' ' 'GOPATH=$HOME/go_projects' 'GOBIN=$GOPATH/bin' >/etc/environment && \
+source /etc/environment
+```
+
+> If the above won't work for you due to existing chanes to the file, the following is what needs to be added:
+
+```
+export PATH=$PATH:/usr/local/go/bin:~/go_projects/bin:/usr/local:/usr/local/sonar-scanner/bin
 
 export GOPATH="$HOME/go_projects"
 export GOBIN="$GOPATH/bin"
@@ -63,7 +73,7 @@ export GOBIN="$GOPATH/bin"
 
 Source the file with the paths and updates
 ```
-source ~/.bash_profile
+source /etc/environment
 ```
 
 Verify your install:
@@ -84,13 +94,9 @@ go get -u gopkg.in/alecthomas/gometalinter.v2
 ```
 2. Rename the directory:
 ```
-mv /home/<<user>>/go/bin/gometalinter.v2 /home/<<user>>/go/bin/gometalinter
+mv /root/go/bin/gometalinter.v2 /root/go/bin/gometalinter
 ```
-3. Verify that /home/'user'/go/bin is in the path (you may have to restart the shell or source the file where $PATH is defined)
-```
-echo $Path
-```
-4. Install default linters into GoMetaLinter:
+3. Install default linters into GoMetaLinter:
 ```
 gometalinger --install
 ```
@@ -105,7 +111,6 @@ apt install -y unzip
 wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778-linux.zip
 unzip sonar-scanner-cli-3.0.3.778-linux.zip -d /usr/local/
 mv /usr/local/sonar-scanner-3.0.3.778-linux /usr/local/sonar-scanner
-sed -i '100s#go_projects/bin#go_projects/bin:/usr/local/sonar-scanner/bin#' .bashrc && source .bashrc
 read -p "What is the SonarQube URL? (Full url with http://ip_add:port/sonar) >> " surl
 rm /usr/local/sonar-scanner/conf/sonar-scanner.properties
 printf '%s\n' '#----- Default SonarQube server' 'sonar.host.url='${surl} ' ' '#----- Default source code encoding' '#sonar.sourceEncoding=UTF-8' >/usr/local/sonar-scanner/conf/sonar-scanner.properties
@@ -116,7 +121,8 @@ printf '%s\n' '#----- Default SonarQube server' 'sonar.host.url='${surl} ' ' '#-
 #### Configure your project
 EACH project that you want to scan, MUST HAVE a Sonar Scanner config file somwhere in your repo directory structure. It does not need to be in root of the project, but if it is not, some additional configuration details will change (they will be included).
 
-Put the configuration file in your repo. Sample:
+Put the configuration file in your repo. root.
+######Sample:
 ```bash
 # must be unique in a given SonarQube instance
 sonar.projectKey=my:project
