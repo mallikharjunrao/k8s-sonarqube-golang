@@ -6,7 +6,7 @@
 MAINTAINER Dennis Christilaw (https://github.com/Talderon)
 
 # extra metadata
-LABEL version="0.5.2"
+LABEL version="0.5.5"
 LABEL description="Beta build of SonarQube Scanner for GoLang."
 
 FROM ubuntu:16.04
@@ -56,17 +56,15 @@ RUN wget https://dl.google.com/go/go1.10.linux-amd64.tar.gz && \
 
 # Install GoMetaLinter
 RUN go get -u gopkg.in/alecthomas/gometalinter.v2 && \
-    mv $HOME/go/bin/gometalinter.v2 $HOME/go/bin/gometalinter
-
-# GoMetaLinter installation (install linters)
-RUN gometalinger --install
+    mv $HOME/go/bin/gometalinter.v2 $HOME/go/bin/gometalinter && \
+    gometalinger --install
 
 # Install Sonar-Scanner
-RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778-linux.zip
-    unzip sonar-scanner-cli-3.0.3.778-linux.zip -d /usr/local/
+RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778-linux.zip && \
+    unzip sonar-scanner-cli-3.0.3.778-linux.zip -d /usr/local/ && \
     mv -f /usr/local/sonar-scanner-3.0.3.778-linux /usr/local/sonar-scanner
 
 # Cleanup	
-RUN apt-get -qy autoremove
-rm -f ~/go1.10.linux-amd64.tar.gz
+RUN apt-get -qy autoremove && \
+rm -f ~/go1.10.linux-amd64.tar.gz && \
 rm -f ~/sonar-scanner-cli-3.0.3.778-linux.zip
