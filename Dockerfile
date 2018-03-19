@@ -73,8 +73,10 @@ RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-sc
     mv -f /usr/local/sonar-scanner-3.0.3.778-linux /usr/local/sonar-scanner
 
 # Install GoMetaLinter
-RUN go get -u gopkg.in/alecthomas/gometalinter.v2 && \
-    mv $HOME/go/bin/gometalinter.v2 $HOME/go/bin/gometalinter && \
+RUN wget https://github.com/alecthomas/gometalinter/releases/download/v2.0.5/gometalinter-2.0.5-linux-amd64.tar.gz && \
+    tar -C /root/go_projects/bin/ -xzf gometalinter-2.0.5-linux-amd64.tar.gz && \
+    mv * ../ && \
+    rm -rf gometalinter-2.0.5-linux-amd64/ && \
     gometalinger --install
 
 # Cleanup	
