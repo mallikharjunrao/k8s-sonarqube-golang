@@ -2,8 +2,8 @@
 #    Barebones installation with GoLang,GoMetaLinter and Sonar-scanner installed and configured
 # Creation Date: March 15, 2018
 
-# OS Version - Note that this Dockerfile was greated with Ubuntu in mind.
-FROM ubuntu:16.04
+# OS Version - Note that this Dockerfile was created with Ubuntu in mind.
+FROM ubuntu:16.04:latest
 
 # Author
 MAINTAINER Dennis Christilaw (https://github.com/Talderon)
@@ -67,15 +67,15 @@ RUN echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/us
 # Source the .profile to get path changes    
 RUN /bin/bash -c "source /root/.profile"
 
-# Install GoMetaLinter
-RUN go get -u gopkg.in/alecthomas/gometalinter.v2 && \
-    mv $HOME/go/bin/gometalinter.v2 $HOME/go/bin/gometalinter && \
-    gometalinger --install
-
 # Install Sonar-Scanner
 RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778-linux.zip && \
     unzip sonar-scanner-cli-3.0.3.778-linux.zip -d /usr/local/ && \
     mv -f /usr/local/sonar-scanner-3.0.3.778-linux /usr/local/sonar-scanner
+
+# Install GoMetaLinter
+RUN go get -u gopkg.in/alecthomas/gometalinter.v2 && \
+    mv $HOME/go/bin/gometalinter.v2 $HOME/go/bin/gometalinter && \
+    gometalinger --install
 
 # Cleanup	
 RUN apt-get -qy autoremove && \
