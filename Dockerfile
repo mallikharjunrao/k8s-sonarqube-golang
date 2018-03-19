@@ -55,9 +55,10 @@ RUN mkdir -p $HOME/go_projects/{bin,src,pkg} && \
     mkdir -p /usr/local/sonar-scanner/bin
 
 # Configure Path 
-RUN rm -f /etc/environment && \
-    printf '%s\n' 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/go/bin:/root/go_projects/bin:/usr/local:/usr/local/sonar-scanner/bin"' ' ' 'GOPATH=$HOME/go_projects' 'GOBIN=$GOPATH/bin' >/etc/environment && \
-    source /etc/environment
+RUN echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/go/bin:/root/go_projects/bin:/usr/local:/usr/local/sonar-scanner/bin"' >>.profile && \
+    echo 'GOPATH=$HOME/go_projects'  >>.profile && \
+    echo 'GOBIN=$GOPATH/bin' >>.profile && \
+    source .profile
 
 # Install GoMetaLinter
 RUN go get -u gopkg.in/alecthomas/gometalinter.v2 && \
