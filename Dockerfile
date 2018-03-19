@@ -15,7 +15,7 @@ LABEL description="Beta build of SonarQube Scanner for GoLang."
 ENV HOME /root
 
 # Add the hostname to the hosts file
-RUN uhost=( $(cat /etc/hostname ) ) && \
+RUN uhost=$(cat /etc/hostname ) && \
     echo '127.0.0.1 '$uhost >> /etc/hosts
 
 # Run updates to ensure the repo's are updated
