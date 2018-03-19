@@ -61,7 +61,7 @@ RUN mkdir -p $HOME/go_projects/{bin,src,pkg} && \
 # Configure Path 
 RUN echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/go/bin:/root/go_projects/bin:/usr/local:/usr/local/sonar-scanner/bin"' >>.profile && \
     echo 'GOPATH=$HOME/go_projects'  >>.profile && \
-    echo 'GOBIN=$GOPATH/bin' >>.profile && \
+    echo 'GOBIN=$GOPATH/bin' >>.profile
 
 # Source the .profile to get path changes    
 RUN source .profile
