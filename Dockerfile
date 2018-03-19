@@ -64,7 +64,8 @@ RUN echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/us
     echo 'GOBIN=$GOPATH/bin' >>/root/.profile
 
 # Source the .profile to get path changes    
-RUN source /root/.profile
+RUN sudo -s && \
+    source /root/.profile
 
 # Install GoMetaLinter
 RUN go get -u gopkg.in/alecthomas/gometalinter.v2 && \
