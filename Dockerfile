@@ -52,8 +52,10 @@ RUN wget https://dl.google.com/go/go1.10.linux-amd64.tar.gz && \
 
 # Set GoLang Environment 
 RUN mkdir -p $HOME/go_projects/{bin,src,pkg} && \
-    mkdir -p /usr/local/sonar-scanner/bin && \
-    rm -f /etc/environment && \
+    mkdir -p /usr/local/sonar-scanner/bin
+
+# Configure Path 
+RUN rm -f /etc/environment && \
     printf '%s\n' 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/go/bin:/root/go_projects/bin:/usr/local:/usr/local/sonar-scanner/bin"' ' ' 'GOPATH=$HOME/go_projects' 'GOBIN=$GOPATH/bin' >/etc/environment && \
     source /etc/environment
 
