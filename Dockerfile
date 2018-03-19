@@ -19,7 +19,7 @@ RUN uhost=$(cat /etc/hostname ) && \
     echo '127.0.0.1 '$uhost >> /etc/hosts
 
 # Run updates to ensure the repo's are updated
-RUN apt-get update -y && apt-get upgrade -y
+RUN apt-get update -qy && apt-get upgrade -qy
 
 # Installs software in order to allow for independent vendor software sources, in particular the “add-apt-repository” command that is used elsewhere
 # As well as come CLI Tools that are needed for various functions.
@@ -38,11 +38,11 @@ RUN apt-get install -qy \
 # Install Docker
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
-    apt-get update -y && \
-    apt-get install -y docker-ce
+    apt-get update -qy && \
+    apt-get install -qy docker-ce
 
 # Install Kubectl
-RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.9.4/bin/linux/amd64/kubectl && \
     chmod +x ./kubectl && \
     mv ./kubectl /usr/local/bin/kubectl
 
