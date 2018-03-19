@@ -44,7 +44,7 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
 # Install Kubectl
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
     chmod +x ./kubectl && \
-    sudo mv ./kubectl /usr/local/bin/kubectl
+    mv ./kubectl /usr/local/bin/kubectl
 
 # Install GoLang (1.10)
 RUN wget https://dl.google.com/go/go1.10.linux-amd64.tar.gz && \
@@ -67,5 +67,5 @@ RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-sc
 
 # Cleanup	
 RUN apt-get -qy autoremove && \
-rm -f ~/go1.10.linux-amd64.tar.gz && \
-rm -f ~/sonar-scanner-cli-3.0.3.778-linux.zip
+    rm -f ~/go1.10.linux-amd64.tar.gz && \
+    rm -f ~/sonar-scanner-cli-3.0.3.778-linux.zip
