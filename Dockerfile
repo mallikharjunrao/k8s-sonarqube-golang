@@ -3,7 +3,7 @@
 # Creation Date: March 15, 2018
 
 # OS Version - Note that this Dockerfile was created with Ubuntu in mind.
-FROM ubuntu:16.04:latest
+FROM ubuntu:16.04
 
 # Author
 MAINTAINER Dennis Christilaw (https://github.com/Talderon)
