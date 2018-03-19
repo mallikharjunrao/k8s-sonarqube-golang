@@ -2,14 +2,15 @@
 #    Barebones installation with GoLang,GoMetaLinter and Sonar-scanner installed and configured
 # Creation Date: March 15, 2018
 
+# OS Version - Note that this Dockerfile was greated with Ubuntu in mind.
+FROM ubuntu:16.04
+
 # Author
 MAINTAINER Dennis Christilaw (https://github.com/Talderon)
 
 # extra metadata
 LABEL version="0.5.5"
 LABEL description="Beta build of SonarQube Scanner for GoLang."
-
-FROM ubuntu:16.04
 
 ENV HOME /root
 
