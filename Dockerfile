@@ -47,7 +47,7 @@ RUN mkdir -p $HOME/go_projects/{bin,src,pkg} && \
     mkdir -p /usr/local/go/bin
 
 # Configure Path 
-RUN echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/go/bin:/root/go_projects/bin:/usr/local:/usr/local/sonar-scanner/bin:/usr/local/go/bin"' >>/root/.profile && \
+RUN echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/go/bin:/root/go_projects/bin:/usr/local:/usr/local/sonar-scanner/bin:/usr/local/go/bin"' >/root/.profile && \
     echo 'GOPATH=$HOME/go_projects'  >>/root/.profile && \
     echo 'GOBIN=$GOPATH/bin' >>$HOME/.profile
 
@@ -77,17 +77,17 @@ RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-sc
 # Install GoMetaLinter (breaking up for troubleshooting)
 RUN wget https://github.com/alecthomas/gometalinter/releases/download/v2.0.5/gometalinter-2.0.5-linux-amd64.tar.gz
 
-RUN tar -C /usr/local/bin/ -xzf gometalinter-2.0.5-linux-amd64.tar.gz
+RUN tar -C $GOBIN -xzf gometalinter-2.0.5-linux-amd64.tar.gz
 
-RUN cd /usr/local/bin/gometalinter-2.0.5-linux-amd64 && \
+RUN cd $GOBIN/gometalinter-2.0.5-linux-amd64 && \
     mv /usr/local/bin/gometalinter-2.0.5-linux-amd64/* /usr/local/bin/ && \
     cd $HOME
 
 # Commenting below command for troubleshooting
-# RUN /usr/local/bin/gometalinter --install
+RUN $GOBIN/gometalinter --install
 
 # Cleanup	
 RUN apt-get -qy autoremove && \
-    rm -rf /usr/local/bin/gometalinter-2.0.5-linux-amd64/ && \
+    rm -rf $GOBIN/gometalinter-2.0.5-linux-amd64/ && \
     rm -f $HOME/go1.10.linux-amd64.tar.gz && \
     rm -f $HOME/sonar-scanner-cli-3.0.3.778-linux.zip
