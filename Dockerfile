@@ -81,7 +81,7 @@ RUN tar -C /usr/local/bin/ -xzf gometalinter-2.0.5-linux-amd64.tar.gz
 
 RUN cd /usr/local/bin/gometalinter-2.0.5-linux-amd64 && \
     mv /usr/local/bin/gometalinter-2.0.5-linux-amd64/* /usr/local/bin/ && \
-    cd $HOME && \
+    cd $HOME
 
 RUN /usr/local/bin/gometalinger --install
 
