@@ -46,6 +46,14 @@ RUN mkdir -p $HOME/go_projects/{bin,src,pkg} && \
     mkdir -p /usr/local/sonar-scanner/bin && \
     mkdir -p /usr/local/go/bin
 
+# Configure Path 
+RUN echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/go/bin:/root/go_projects/bin:/usr/local:/usr/local/sonar-scanner/bin:/usr/local/go/bin"' >>/root/.profile && \
+    echo 'GOPATH=$HOME/go_projects'  >>/root/.profile && \
+    echo 'GOBIN=$GOPATH/bin' >>$HOME/.profile
+
+# Source the .profile to get path changes    
+RUN /bin/bash -c "source $HOME/.profile"
+
 # Install Docker
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
@@ -61,23 +69,13 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.9.4/bi
 RUN wget https://dl.google.com/go/go1.10.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf go1.10.linux-amd64.tar.gz
 
-# Configure Path 
-RUN echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/go/bin:/root/go_projects/bin:/usr/local:/usr/local/sonar-scanner/bin:/usr/local/go/bin"' >>/root/.profile && \
-    echo 'GOPATH=$HOME/go_projects'  >>/root/.profile && \
-    echo 'GOBIN=$GOPATH/bin' >>$HOME/.profile
-
-# Source the .profile to get path changes    
-RUN /bin/bash -c "source $HOME/.profile"
-
 # Install Sonar-Scanner
 RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778-linux.zip && \
     unzip sonar-scanner-cli-3.0.3.778-linux.zip -d /usr/local/ && \
     mv -f /usr/local/sonar-scanner-3.0.3.778-linux /usr/local/sonar-scanner
 
 # Install GoMetaLinter
-RUN /bin/bash -c "source /root/.profile" && \
-    mkdir -p $HOME/go_projects/{bin,src,pkg} && \
-    wget https://github.com/alecthomas/gometalinter/releases/download/v2.0.5/gometalinter-2.0.5-linux-amd64.tar.gz && \
+RUN wget https://github.com/alecthomas/gometalinter/releases/download/v2.0.5/gometalinter-2.0.5-linux-amd64.tar.gz && \
     tar -C $GOBIN/ -xzf gometalinter-2.0.5-linux-amd64.tar.gz && \
     cd $GOBIN/gometalinter-2.0.5-linux-amd64 && \
     mv * $GOBIN && \
