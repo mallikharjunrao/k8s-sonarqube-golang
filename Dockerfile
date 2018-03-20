@@ -83,7 +83,7 @@ RUN cd /usr/local/bin/gometalinter-2.0.5-linux-amd64 && \
     mv /usr/local/bin/gometalinter-2.0.5-linux-amd64/* /usr/local/bin/ && \
     cd $HOME
 
-RUN /usr/local/bin/gometalinger --install
+RUN /usr/local/bin/gometalinter --install
 
 # Cleanup	
 RUN apt-get -qy autoremove && \
