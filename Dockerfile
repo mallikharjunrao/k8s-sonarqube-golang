@@ -10,9 +10,11 @@ MAINTAINER Dennis Christilaw (https://github.com/Talderon)
 
 # extra metadata
 LABEL version="0.6.1"
-LABEL description="Beta build of SonarQube Scanner for GoLang."
+LABEL description="Beta build of SonarQube Scanner for GoLang - Dev Environment."
 
 ENV HOME /root
+ENV GOPATH=$HOME/go_projects
+ENV GOBIN=$GOPATH/bin
 
 # Add the hostname to the hosts file
 RUN uhost=$(cat /etc/hostname ) && \
@@ -76,14 +78,14 @@ RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-sc
 RUN /bin/bash -c "source /root/.profile" && \
     mkdir -p $HOME/go_projects/{bin,src,pkg} && \
     wget https://github.com/alecthomas/gometalinter/releases/download/v2.0.5/gometalinter-2.0.5-linux-amd64.tar.gz && \
-    tar -C $HOME/go_projects/bin/ -xzf gometalinter-2.0.5-linux-amd64.tar.gz && \
-    cd $HOME/go_projects/bin/gometalinter-2.0.5-linux-amd64 && \
-    mv * $HOME/go_projects/bin/ && \
+    tar -C $GOBIN/ -xzf gometalinter-2.0.5-linux-amd64.tar.gz && \
+    cd $GOBIN/gometalinter-2.0.5-linux-amd64 && \
+    mv * $GOBIN && \
     cd $HOME && \
     gometalinger --install
 
 # Cleanup	
 RUN apt-get -qy autoremove && \
-    rm -rf $HOME/go_projects/bin/gometalinter-2.0.5-linux-amd64/ && \
+    rm -rf $GOBIN/gometalinter-2.0.5-linux-amd64/ && \
     rm -f $HOME/go1.10.linux-amd64.tar.gz && \
     rm -f $HOME/sonar-scanner-cli-3.0.3.778-linux.zip
