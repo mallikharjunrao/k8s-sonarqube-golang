@@ -80,7 +80,7 @@ RUN wget https://github.com/alecthomas/gometalinter/releases/download/v2.0.5/gom
     cd /usr/local/bin/gometalinter-2.0.5-linux-amd64 && \
     mv * /usr/local/bin/ && \
     cd $HOME && \
-    gometalinger --install
+    /usr/local/bin/gometalinger --install
 
 # Cleanup	
 RUN apt-get -qy autoremove && \
