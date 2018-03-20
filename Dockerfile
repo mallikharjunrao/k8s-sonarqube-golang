@@ -77,11 +77,11 @@ RUN wget https://github.com/alecthomas/gometalinter/releases/download/v2.0.5/gom
     tar -C /root/go_projects/bin/ -xzf gometalinter-2.0.5-linux-amd64.tar.gz && \
     cd /root/go_projects/bin/gometalinter-2.0.5-linux-amd64 && \
     mv * /root/go_projects/bin/ && \
-    cd /root/go_projects/bin && \
-    rm -rf gometalinter-2.0.5-linux-amd64/ && \
+    cd /root && \
     gometalinger --install
 
 # Cleanup	
 RUN apt-get -qy autoremove && \
-    rm -f ~/go1.10.linux-amd64.tar.gz && \
-    rm -f ~/sonar-scanner-cli-3.0.3.778-linux.zip
+    rm -rf /root/go_projects/bin/gometalinter-2.0.5-linux-amd64/ && \
+    rm -f /root/go1.10.linux-amd64.tar.gz && \
+    rm -f /root/sonar-scanner-cli-3.0.3.778-linux.zip
