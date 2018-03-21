@@ -44,12 +44,13 @@ RUN sudo -s
 # Set GoLang Environment 
 RUN mkdir -p $HOME/go_projects/{bin,src,pkg} && \
     mkdir -p /usr/local/sonar-scanner/bin && \
-    mkdir -p /usr/local/go/bin
+    mkdir -p /usr/local/go/bin && \
+    /bin/bash -c "touch #HOME/.profile"
 
 # Configure Path 
-RUN echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/go/bin:/root/go_projects/bin:/usr/local:/usr/local/sonar-scanner/bin:/usr/local/go/bin"' >/root/.profile && \
-    echo 'GOPATH=$HOME/go_projects'  >>/root/.profile && \
-    echo 'GOBIN=$GOPATH/bin' >>$HOME/.profile
+RUN /bin/bash -c "echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/go/bin:/root/go_projects/bin:/usr/local:/usr/local/sonar-scanner/bin:/usr/local/go/bin"' >>/root/.profile" && \
+    /bin/bash -c "echo 'GOPATH=$HOME/go_projects'  >>/root/.profile" && \
+    /bin/bash -c "echo 'GOBIN=$GOPATH/bin' >>$HOME/.profile"
 
 # Source the .profile to get path changes    
 RUN /bin/bash -c "source $HOME/.profile"
@@ -84,7 +85,7 @@ RUN cd $GOBIN/gometalinter-2.0.5-linux-amd64 && \
     cd $HOME
 
 # Commenting below command for troubleshooting
-RUN $GOBIN/gometalinter --install
+# RUN $GOBIN/gometalinter --install
 
 # Cleanup	
 RUN apt-get -qy autoremove && \
