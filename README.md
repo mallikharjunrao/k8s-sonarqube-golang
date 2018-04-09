@@ -44,11 +44,6 @@ I am sure other OS's will run this without issue, however, those are the only OS
 
 > I have not tested anything natively on Windows OS's as they are more prone to issues than Linux based systems. Note that these instructions are OS Platform Agnostic (for the most part) as long as it is Linux Based. I have no plans (at this time) to test in a native Windows environment due to my current workload. If there is enough demand, I might be able to get it in sooner rather than later.
 
-## Automation (BETA)
-The automation script (ubuntu-sonarqube setup.sh) included here is designed to fully automate this process with some user prompted input. This script is in BETA, however, I would encourage anyone to try it and leave some feedback.
-
-I plan to have a similar script for YUM based distributions (I will test on CentOS7 and RHEL 7) in the coming days/weeks. Keep checking back!
-
 #### Install Docker
 > Depending on the flavor of the development machine, install [Docker](https://docs.docker.com/engine/installation/).
 > (Ubuntu 16.0.4 LTS, you can install with the below commands)
@@ -209,7 +204,7 @@ kubectl cp *.jar ${psonar[1]}:/opt/sonarqube/extensions/plugins/
 
 > The command would be: 
 
->     kubectl cp sonar-golang-plugin-1.2.11.jar sonarqube-664b4fd48-d7vbs:/opt/sonarqube/extensions/plugins/
+>     kubectl cp *.jar sonarqube-664b4fd48-d7vbs:/opt/sonarqube/extensions/plugins/
 
 ###### Re-Start sonarqube server
 Easiest way is to use the GUI to restart
