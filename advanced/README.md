@@ -1,6 +1,12 @@
 # SonarQube with Postgres Database on Kubernetes for GoLang Advanced Settings
 ###### Documentation By: Dennis Christilaw (https://github.com/Talderon)
 
+## Table of Contents (MarkDown Files)
+
+* [SonarQube Setup (this file)](../README.md)
+* [Local Environment Setup](../golang-sonar-scanner.md)
+* [Advanced Configurations](README.md)
+
 ## Purpose
 The purpose of this document is to address some common questions and issues that you can face when getting this all set up with more complex environment variables and functions.
 

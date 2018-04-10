@@ -1,6 +1,12 @@
 # Configure Local Environment - Sonar-Scanner with Golang
 ###### Documentation By: Dennis Christilaw (https://github.com/Talderon)
 
+## Table of Contents (MarkDown Files)
+
+* [SonarQube Setup (this file)](README.md)
+* [Local Environment Setup](golang-sonar-scanner.md)
+* [Advanced Configurations](advanced/README.md)
+
 ## Purpose
 This document will walk through how to install the needed apps on your local/dev environment to scan GoLang code with Sonar Scanner.
 
