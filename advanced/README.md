@@ -3,7 +3,7 @@
 
 ## Table of Contents (MarkDown Files)
 
-* [SonarQube Setup (this file)](../README.md)
+* [SonarQube Setup](../README.md)
 * [Local Environment Setup](../golang-sonar-scanner.md)
 * [Advanced Configurations](README.md)
 
