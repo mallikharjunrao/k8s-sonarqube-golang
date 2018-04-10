@@ -16,7 +16,7 @@ More will be added as they are needed, discovered or asked for.
 
 ## Creating a PV with NFS
 
-```
+```yaml
 ApiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -55,7 +55,7 @@ These are the basics needed.
 
 ## Creating a PV-Claim with NFS
 
-```
+```yaml
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -76,7 +76,7 @@ Just make sure everything matches what is in the PV file
 
 ## Postgres Deployment with NFS
 
-```
+```yaml
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -123,7 +123,7 @@ SonarQube Server Mount Point: /opt/sonarqube/extensions/plugins/
 
 ## SonarQube Ingress with DNS name
 
-```
+```yaml
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -152,7 +152,7 @@ status:
       - ip: 192.168.23.55
 ```
 
-```
+```yaml
   annotations:
     kubernetes.io/ingress.class: tectonic
 ```
@@ -161,7 +161,7 @@ This is only needed if your cluster management environment requires it (again, k
 
 For this Ingress, I have chosen the DNS Entry: sonarqube.devops.kube.example.com - Be sure to speak with your k8s admin to make sure you have the access to create these.
 
-```
+```yaml
       - backend:
           serviceName: sq-svc-devops
           servicePort: 80
@@ -172,7 +172,7 @@ This section here is VERY important. During the deployment, you should have crea
 
 When you attempt to access the service, you will use: http://sonarqube.devops.kube.example.com (no port numbers or anything else is needed). The Ingress will handle all of the port translations for you.
 
-```
+```yaml
 status:
   loadBalancer:
     ingress:

@@ -1,6 +1,12 @@
 # SonarQube with Postgres Database running in Kubernetes for GoLang code scanning
 ###### Documentation By: Dennis Christilaw (https://github.com/Talderon)
 
+## Table of Contents (MarkDown Files)
+
+[SonarQube Setup (this files)](README.md)
+[Local Environment Setup](golang-sonar-scanner.md)
+[Advanced Configurations](advanced/README.md)
+
 ## Purpose
 This document is meant to help anyone that wants to perform code quality checks for GoLang with SonarQube running in Kubernetes. The server will have a Postgres SQL backend to store scan data. This will live in a persistant volume that this process creates.
 
