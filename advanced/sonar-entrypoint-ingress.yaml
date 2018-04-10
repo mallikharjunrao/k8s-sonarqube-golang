@@ -1,19 +1,19 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: blue-sq-ingress-stage
-  namespace: blue-devops-staging
+  name: sq-ingress-devops
+  namespace: devops-staging
   labels:
-    app: SonarQube-Stage
+    app: SonarQube-devops
   annotations:
     kubernetes.io/ingress.class: tectonic
 spec:
   rules:
-  - host: sonarqube.blue-devops-staging.kube.pdsea.f5net.com
+  - host: sonarqube.devops.kube.example.com
     http:
       paths:
       - backend:
-          serviceName: blue-sq-svc-stg
+          serviceName: sq-svc-devops
           servicePort: 80
         path: /sonar
 status:
@@ -24,4 +24,3 @@ status:
       - ip: 192.168.180.57
       - ip: 192.168.22.215
       - ip: 192.168.23.55
-

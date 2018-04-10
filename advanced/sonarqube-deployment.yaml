@@ -26,4 +26,3 @@ spec:
           ports:
             - containerPort: 9000
               name: blue-sq-stg
-

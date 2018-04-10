@@ -52,3 +52,135 @@ What you see above in a simple manifest file to create a PV on an NFS Share.
 * nfs: Server and Share Path
 
 These are the basics needed.
+
+## Creating a PV-Claim with NFS
+
+```
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sqpv-devops
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+```
+
+Just make sure everything matches what is in the PV file
+
+* Name
+* AccessMode
+* Storage
+
+## Postgres Deployment with NFS
+
+```
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sq-db-devops
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: sq-db-devops
+      labels:
+        name: sq-db-devops
+    spec:
+      containers:
+        - image: postgres:latest
+          name: sq-db-devops
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-pwd-devops
+                  key: password
+            - name: POSTGRES_USER
+              value: sonar
+          ports:
+            - containerPort: 5432
+              name: postgresport
+          volumeMounts:
+            # This name must match the volumes.name below.
+            - name: sqdb-data-devops
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: sqdb-data-devops
+          persistentVolumeClaim:
+            claimName: sqpv-claim-devops
+```
+
+From here, everything below VolumeMounts is where you will put the information for your PV-Claim.
+
+## SonarQube Deployment with NFS for Plugins Directory
+
+### Coming soon. I am still finalizing this Manifest File for consumption
+
+SonarQube Server Mount Point: /opt/sonarqube/extensions/plugins/
+
+## SonarQube Ingress with DNS name
+
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: sq-ingress-devops
+  namespace: devops-staging
+  labels:
+    app: SonarQube-devops
+  annotations:
+    kubernetes.io/ingress.class: tectonic
+spec:
+  rules:
+  - host: sonarqube.devops.kube.example.com
+    http:
+      paths:
+      - backend:
+          serviceName: sq-svc-devops
+          servicePort: 80
+        path: /sonar
+status:
+  loadBalancer:
+    ingress:
+      - ip: 192.168.180.53
+      - ip: 192.168.180.56
+      - ip: 192.168.180.57
+      - ip: 192.168.22.215
+      - ip: 192.168.23.55
+```
+
+```
+  annotations:
+    kubernetes.io/ingress.class: tectonic
+```
+
+This is only needed if your cluster management environment requires it (again, k8s Admins). In the case of this example, I am using Tectonic.
+
+For this Ingress, I have chosen the DNS Entry: sonarqube.devops.kube.example.com - Be sure to speak with your k8s admin to make sure you have the access to create these.
+
+```
+      - backend:
+          serviceName: sq-svc-devops
+          servicePort: 80
+        path: /sonar
+```
+
+This section here is VERY important. During the deployment, you should have create a service for both the Database and SonarQube Web Server. Your sonar-service defaults to port 80 and will map to port 9000 for the web app. The NodePort is NOT USED in this instance.
+
+When you attempt to access the service, you will use: http://sonarqube.devops.kube.example.com (no port numbers or anything else is needed). The Ingress will handle all of the port translations for you.
+
+```
+status:
+  loadBalancer:
+    ingress:
+      - ip: 192.168.180.53
+      - ip: 192.168.180.56
+      - ip: 192.168.180.57
+      - ip: 192.168.22.215
+      - ip: 192.168.23.55
+```
+
+You will need to get this informaiton from the admins of your k8s environment.

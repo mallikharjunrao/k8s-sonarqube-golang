@@ -1,23 +1,23 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: blue-sq-db-stage
+  name: sq-db-devops
 spec:
   replicas: 1
   template:
     metadata:
-      name: blue-sq-db-stage
+      name: sq-db-devops
       labels:
-        name: blue-sq-db-stage
+        name: sq-db-devops
     spec:
       containers:
         - image: postgres:latest
-          name: blue-sq-db-stage
+          name: sq-db-devops
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-pwd-stage
+                  name: postgres-pwd-devops
                   key: password
             - name: POSTGRES_USER
               value: sonar
@@ -26,10 +26,9 @@ spec:
               name: postgresport
           volumeMounts:
             # This name must match the volumes.name below.
-            - name: blue-sqdb-data-stage
+            - name: sqdb-data-devops
               mountPath: /var/lib/postgresql/data
       volumes:
-        - name: blue-sqdb-data-stage
+        - name: sqdb-data-devops
           persistentVolumeClaim:
-            claimName: blue-sqpv-claim-stage
-
+            claimName: sqpv-claim-devops
