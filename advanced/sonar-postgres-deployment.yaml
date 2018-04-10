@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: blue-sq-db-stage
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: blue-sq-db-stage
+      labels:
+        name: blue-sq-db-stage
+    spec:
+      containers:
+        - image: postgres:latest
+          name: blue-sq-db-stage
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-pwd-stage
+                  key: password
+            - name: POSTGRES_USER
+              value: sonar
+          ports:
+            - containerPort: 5432
+              name: postgresport
+          volumeMounts:
+            # This name must match the volumes.name below.
+            - name: blue-sqdb-data-stage
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: blue-sqdb-data-stage
+          persistentVolumeClaim:
+            claimName: blue-sqpv-claim-stage
+

@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: blue-sq-stg
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: blue-sq-stg
+      labels:
+        name: blue-sq-stg
+    spec:
+      containers:
+        - image: sonarqube:latest
+          args:
+            - -Dsonar.web.context=/sonar
+          name: blue-sq-stg
+          env:
+            - name: SONARQUBE_JDBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-pwd-stage
+                  key: password
+            - name: SONARQUBE_JDBC_URL
+              value: jdbc:postgresql://blue-sq-db-stage:5432/sonar
+          ports:
+            - containerPort: 9000
+              name: blue-sq-stg
+

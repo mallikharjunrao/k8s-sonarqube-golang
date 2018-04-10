@@ -1,0 +1,16 @@
+ApiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: blue-sqpv-stage
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=3"
+spec:
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: cm-zfs-01.pdsea.f5net.com
+    path: /mnt/Tier3/blue-kube-store/blue-devops/staging/sonarqube
+
