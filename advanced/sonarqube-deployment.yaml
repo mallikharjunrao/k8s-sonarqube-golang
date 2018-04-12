@@ -1,20 +1,20 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: blue-sq-stg
+  name: sq-stg
 spec:
   replicas: 1
   template:
     metadata:
-      name: blue-sq-stg
+      name: sq-stg
       labels:
-        name: blue-sq-stg
+        name: sq-stg
     spec:
       containers:
         - image: sonarqube:latest
           args:
             - -Dsonar.web.context=/sonar
-          name: blue-sq-stg
+          name: sq-stg
           env:
             - name: SONARQUBE_JDBC_PASSWORD
               valueFrom:
@@ -22,7 +22,15 @@ spec:
                   name: postgres-pwd-stage
                   key: password
             - name: SONARQUBE_JDBC_URL
-              value: jdbc:postgresql://blue-sq-db-stage:5432/sonar
+              value: jdbc:postgresql://sq-db-stage:5432/sonar
           ports:
             - containerPort: 9000
-              name: blue-sq-stg
+              name: sq-stg
+          volumeMounts:
+            # This name must match the volumes.name below.
+            - name: sqpi-data-devops
+              mountPath: /opt/sonarqube/extensions/plugins/
+      volumes:
+        - name: sqpi-data-devops
+          persistentVolumeClaim:
+            claimName: sqplugins-claim-devops

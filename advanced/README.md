@@ -21,6 +21,7 @@ Such as (but no limited too):
 More will be added as they are needed, discovered or asked for.
 
 ## Creating a PV with NFS
+This Manifest file will create 2 Persistent Volumes (one for the Database and one for the plugins folder on the SQ server).
 
 ```yaml
 ApiVersion: v1
@@ -37,7 +38,23 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: nfs.example.com
-    path: /mnt/Tier3/kube-store/devops/sonarqube
+    path: /mnt/Tier3/kube-store/devops/sqdb
+---
+ApiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqplugins-devops
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=3"
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: nfs.example.com
+    path: /mnt/Tier3/kube-store/devops/sqplugins
 ```
 
 What you see above in a simple manifest file to create a PV on an NFS Share.
@@ -60,18 +77,31 @@ What you see above in a simple manifest file to create a PV on an NFS Share.
 These are the basics needed.
 
 ## Creating a PV-Claim with NFS
+This Manifest file will create 2 Persistent Volumes Claims (one for the Database and one for the plugins folder on the SQ server).
 
 ```yaml
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
-  name: sqpv-devops
+  name: sqdb-claim-devops
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 500Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sqplugins-claim-devops
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+
 ```
 
 Just make sure everything matches what is in the PV file
@@ -123,9 +153,48 @@ From here, everything below VolumeMounts is where you will put the information f
 
 ## SonarQube Deployment with NFS for Plugins Directory
 
-### Coming soon. I am still finalizing this Manifest File for consumption
+```yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sq-stg
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: sq-stg
+      labels:
+        name: sq-stg
+    spec:
+      containers:
+        - image: sonarqube:latest
+          args:
+            - -Dsonar.web.context=/sonar
+          name: sq-stg
+          env:
+            - name: SONARQUBE_JDBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-pwd-stage
+                  key: password
+            - name: SONARQUBE_JDBC_URL
+              value: jdbc:postgresql://sq-db-stage:5432/sonar
+          ports:
+            - containerPort: 9000
+              name: sq-stg
+          volumeMounts:
+            # This name must match the volumes.name below.
+            - name: sqpi-data-devops
+              mountPath: /opt/sonarqube/extensions/plugins/
+      volumes:
+        - name: sqpi-data-devops
+          persistentVolumeClaim:
+            claimName: sqplugins-claim-devops
+```
 
 SonarQube Server Mount Point: /opt/sonarqube/extensions/plugins/
+
+The reason for this is to persist the plugins after pod termination.
 
 ## SonarQube Ingress with DNS name
 

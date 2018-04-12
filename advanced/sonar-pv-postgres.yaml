@@ -12,4 +12,20 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: nfs.example.com
-    path: /mnt/Tier3/kube-store/devops/sonarqube
+    path: /mnt/Tier3/kube-store/devops/sqdb
+---
+ApiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sqplugins-devops
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=3"
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: nfs.example.com
+    path: /mnt/Tier3/kube-store/devops/sqplugins
