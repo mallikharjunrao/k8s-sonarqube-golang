@@ -26,9 +26,9 @@ spec:
               name: postgresport
           volumeMounts:
             # This name must match the volumes.name below.
-            - name: data-disk
+            - name: database-disk
               mountPath: /var/lib/postgresql/data
       volumes:
-        - name: data-disk
+        - name: database-disk
           persistentVolumeClaim:
-            claimName: claim-postgres
+            claimName: sqdb-claim-postgres
