@@ -225,5 +225,5 @@ To set up your local environment, please consult the GoLang Sonar-Scanner local 
 
 ### Continue to Local Environment Setup
 
-[Local Environment Setup](https://github.com/Talderon/k8s-sonarqube/blob/master/golang-sonar-scanner.md)
-
+# NOTE
+If you are looking to use the SonarGo (generic) plugin vs the GoLang plugin, please watch this issue: https://github.com/Talderon/k8s-sonarqube-golang/issues/11
